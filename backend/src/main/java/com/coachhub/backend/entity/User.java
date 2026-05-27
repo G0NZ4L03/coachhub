@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "users")
 @Data
@@ -25,6 +27,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    // WRITE_ONLY: el password se recibe en el registro pero 
+    // nunca se devuelve en las respuestas JSON por seguridad
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
