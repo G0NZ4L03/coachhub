@@ -1,0 +1,51 @@
+import axios from 'axios'
+
+// Direccion del backend de Spring Boot
+const BASE_URL = 'http://localhost:8080/api'
+
+// Preparamos axios para no tener que escribir la ruta entera todo el rato
+const api = axios.create({
+  baseURL: BASE_URL,
+})
+
+// Aqui interceptamos antes de hacer cualquier peticion al servidor.
+// Le "da" el token JWT a la peticion para poder entrar con Spring Boot 
+// sin que salte el error 403
+api.interceptors.request.use((config) => {
+  // Guardamos el token del usuario cuando entra
+  const token = localStorage.getItem('token')
+  
+  if (token) {
+    // Añadimos el token JWT como "DNI digital" en la cabecera de la peticion
+    // El formato Bearer es el que espera nuestro filtro de Spring Security
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  
+  return config
+})
+
+// --- ZONA DE LOGIN Y REGISTRO ---
+
+// Pasamos los datos, pidiendo el codigo secreto si es entrenador
+export const register = (data) => api.post('/auth/register', data)
+
+// Mandamos el correo y contraseña y el servidor nos devuelve el token
+export const login = (data) => api.post('/auth/login', data)
+
+
+// --- GESTION DE USUARIOS ---
+
+// Nos dice quien es el usuario activo ahora mismo
+export const getMe = () => api.get('/users/me')
+
+// Para cuando el atleta rellena su peso y altura obligatorios por primera vez
+export const updateProfile = (data) => api.put('/users/profile', data)
+
+// Saca la lista de clientes reales que tiene el entrenador actual
+export const getMyAthletes = () => api.get('/users/my-athletes')
+
+// Asocia a un atleta con su entrenador usando solo el correo
+export const linkAthlete = (athleteEmail) => 
+  api.post(`/users/link-athlete?athleteEmail=${athleteEmail}`)
+
+export default api
