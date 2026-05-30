@@ -12,8 +12,8 @@ const api = axios.create({
 // Le "da" el token JWT a la peticion para poder entrar con Spring Boot 
 // sin que salte el error 403
 api.interceptors.request.use((config) => {
-  // Guardamos el token del usuario cuando entra
-  const token = localStorage.getItem('token')
+// Recuperamos el token del usuario guardado al hacer login
+const token = localStorage.getItem('jwt_token')
   
   if (token) {
     // Añadimos el token JWT como "DNI digital" en la cabecera de la peticion

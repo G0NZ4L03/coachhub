@@ -1,1 +1,4 @@
 @import "tailwindcss";
+
+/* Activamos el modo oscuro basado en la clase dark en el elemento html */
+@variant dark (&:where(.dark, .dark *));
