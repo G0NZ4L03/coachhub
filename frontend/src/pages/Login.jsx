@@ -44,13 +44,22 @@ export default function Login({ isDarkMode, setIsDarkMode }) {
         data = response.data
       }
 
-      // Guardamos la sesion completa en el contexto y localStorage
-      // data contiene: token, role, name, id, onboardingComplete
-      loginUser(data)
-
-      // Redirigimos segun el rol que nos devuelve el servidor
-      // Usamos data.role y no selectedRole para fiarnos del backend
-      navigate(data.role === 'COACH' ? '/coach/dashboard' : '/athlete/dashboard')
+    // Comprobamos que el rol de la cuenta coincide con el rol seleccionado
+    // Evitamos que un coach entre por el panel de atleta y viceversa
+    if (data.role !== selectedRole) {
+        throw new Error(
+        data.role === 'COACH'
+            ? 'Esta cuenta es de Entrenador. Vuelve y selecciona Entrenador.'
+            : 'Esta cuenta es de Atleta. Vuelve y selecciona Atleta.'
+        )
+    }
+    
+    // Guardamos la sesion completa en el contexto y localStorage
+    // data contiene: token, role, name, id, onboardingComplete
+    loginUser(data)
+    
+    // Redirigimos segun el rol que nos devuelve el servidor
+    navigate(data.role === 'COACH' ? '/coach/dashboard' : '/athlete/dashboard')
 
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Error de conexion')
