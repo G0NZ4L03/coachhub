@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import DashboardCoach from './pages/DashboardCoach'
+import DashboardAthlete from './pages/DashboardAthlete'
 
 function App() {
   // Estado global del modo oscuro gestionado aqui y pasado como prop
@@ -27,15 +28,15 @@ function App() {
 
         {/* Ruta protegida solo para COACH, le pasamos el estado del tema */}
         <Route path="/coach/*" element={
-          <ProtectedRoute allowedRole="COACH">
+          <ProtectedRoute requiredRole="COACH">
             <DashboardCoach isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
           </ProtectedRoute>
         } />
 
-        {/* Ruta protegida solo para ATHLETE */}
+        {/* Ruta protegida solo para ATHLETE, le pasamos el estado del tema */}
         <Route path="/athlete/*" element={
-          <ProtectedRoute allowedRole="ATHLETE">
-            <div className="text-white bg-[#1d1a2f] min-h-screen p-8">Dashboard Atleta proximamente</div>
+          <ProtectedRoute requiredRole="ATHLETE">
+            <DashboardAthlete isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
           </ProtectedRoute>
         } />
       </Routes>
