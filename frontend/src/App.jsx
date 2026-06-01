@@ -4,6 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import DashboardCoach from './pages/DashboardCoach'
 import DashboardAthlete from './pages/DashboardAthlete'
+import CoachAthleteDetail from './pages/CoachAthleteDetail'
 
 function App() {
   // Estado global del modo oscuro gestionado aqui y pasado como prop
@@ -27,9 +28,16 @@ function App() {
         <Route path="/login" element={<Login isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
 
         {/* Ruta protegida solo para COACH, le pasamos el estado del tema */}
-        <Route path="/coach/*" element={
+        <Route path="/coach/dashboard" element={
           <ProtectedRoute requiredRole="COACH">
             <DashboardCoach isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+          </ProtectedRoute>
+        } />
+
+        {/* Ficha detallada de un atleta concreto, accesible solo desde el panel del coach */}
+        <Route path="/coach/athlete/:id" element={
+          <ProtectedRoute requiredRole="COACH">
+            <CoachAthleteDetail isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
           </ProtectedRoute>
         } />
 

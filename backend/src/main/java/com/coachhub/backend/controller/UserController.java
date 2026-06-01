@@ -43,4 +43,12 @@ public class UserController {
             @RequestParam String athleteEmail) {
         return ResponseEntity.ok(userService.linkAthlete(userDetails.getUsername(), athleteEmail));
     }
+
+    // Devuelve los datos completos de un atleta concreto para que el coach vea su ficha
+    @GetMapping("/athletes/{id}")
+    public ResponseEntity<User> getAthleteById(
+        @AuthenticationPrincipal UserDetails userDetails,
+        @PathVariable Long id) {
+    return ResponseEntity.ok(userService.getAthleteById(userDetails.getUsername(), id));
+    }
 }

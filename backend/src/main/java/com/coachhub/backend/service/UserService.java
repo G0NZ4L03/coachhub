@@ -46,4 +46,18 @@ public class UserService {
         athlete.setCoach(coach);
         return userRepository.save(athlete);
     }
+
+    // Busca el atleta por id y verifica que pertenece al coach que hace la peticion
+    // Si el atleta no es del coach, lanzamos excepcion para evitar accesos cruzados
+    public User getAthleteById(String coachEmail, Long athleteId) {
+        User coach = getByEmail(coachEmail);
+        User athlete = userRepository.findById(athleteId)
+                .orElseThrow(() -> new RuntimeException("Atleta no encontrado"));
+
+        if (athlete.getCoach() == null || !athlete.getCoach().getId().equals(coach.getId())) {
+            throw new RuntimeException("Este atleta no pertenece a tu cuenta");
+        }
+
+        return athlete;
+    }
 }
