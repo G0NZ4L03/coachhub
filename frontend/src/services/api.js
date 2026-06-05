@@ -48,4 +48,28 @@ export const getMyAthletes = () => api.get('/users/my-athletes')
 export const linkAthlete = (athleteEmail) => 
   api.post(`/users/link-athlete?athleteEmail=${athleteEmail}`)
 
+// Carga los datos completos de un atleta concreto para la ficha del coach
+export const getAthleteById = (id) => api.get(`/users/athletes/${id}`)
+
+
+// --- MOTOR DE RUTINAS ---
+
+// Trae todos los ejercicios del catalogo para que el coach los seleccione
+export const getAllExercises = () => api.get('/exercises')
+
+// El coach crea una rutina nueva y la asigna a un atleta
+export const createRoutine = (data) => api.post('/routines', data)
+
+// Añade un ejercicio a una rutina con su fecha, series, reps y RIR
+export const addExerciseToRoutine = (routineId, data) => 
+  api.post(`/routines/${routineId}/exercises`, data)
+
+// Devuelve todas las rutinas de un atleta concreto
+export const getRoutinesByAthlete = (athleteId) => 
+  api.get(`/routines/athlete/${athleteId}`)
+
+// Devuelve los ejercicios de una rutina con todos sus parametros
+export const getExercisesByRoutine = (routineId) => 
+  api.get(`/routines/${routineId}/exercises`)
+
 export default api

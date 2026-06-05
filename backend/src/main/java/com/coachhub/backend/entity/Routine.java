@@ -22,6 +22,9 @@ public class Routine {
     @JoinColumn(name = "user_id", nullable = false)
     private User athlete;
 
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
+
     @Column(nullable = false)
     private String name;
 
