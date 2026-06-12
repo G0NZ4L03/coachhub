@@ -82,7 +82,7 @@ export default function CoachAthleteDetail({ isDarkMode, setIsDarkMode }) {
       setFilteredExercises(exercisesRes.data)
 
       // Buscamos la rutina activa entre todas las del atleta
-      const active = routinesRes.data.find(r => r.isActive)
+      const active = routinesRes.data.find(r => r.isActive === true)
       if (active) {
         setActiveRoutine(active)
         // Cargamos los ejercicios de la rutina activa

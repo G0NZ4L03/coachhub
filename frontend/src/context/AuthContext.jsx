@@ -24,8 +24,11 @@ export function AuthProvider({ children }) {
     localStorage.setItem('user_role', data.role)
     localStorage.setItem('user_name', data.name)
     localStorage.setItem('user_id', data.id)
-    // Guardamos como string porque localStorage no entiende booleanos
     localStorage.setItem('onboarding_complete', data.onboardingComplete)
+    // Si el backend nos manda el peso lo guardamos para mostrarlo en el dashboard
+    if (data.startingWeight) {
+      localStorage.setItem('user_starting_weight', data.startingWeight)
+    }
     setUser(data)
   }
 

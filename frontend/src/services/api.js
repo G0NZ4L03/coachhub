@@ -72,4 +72,12 @@ export const getRoutinesByAthlete = (athleteId) =>
 export const getExercisesByRoutine = (routineId) => 
   api.get(`/routines/${routineId}/exercises`)
 
+// --- PROGRESO Y METRICAS ---
+
+// El atleta registra una nueva entrada de peso
+export const addDailyMetric = (data) => api.post('/metrics', data)
+
+// Devuelve el historico de peso del atleta para la grafica
+export const getMyMetrics = () => api.get('/metrics')
+
 export default api
