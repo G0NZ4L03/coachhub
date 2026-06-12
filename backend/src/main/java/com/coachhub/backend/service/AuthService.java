@@ -46,7 +46,7 @@ public class AuthService {
         String token = jwtService.generateToken(user.getEmail());
         boolean onboardingComplete = isOnboardingComplete(user);
 
-        return new AuthResponse(token, user.getRole().name(), user.getName(), user.getId(), onboardingComplete);
+        return new AuthResponse(token, user.getRole().name(), user.getName(), user.getId(), onboardingComplete, user.getStartingWeight());
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -60,7 +60,7 @@ public class AuthService {
         String token = jwtService.generateToken(user.getEmail());
         boolean onboardingComplete = isOnboardingComplete(user);
 
-        return new AuthResponse(token, user.getRole().name(), user.getName(), user.getId(), onboardingComplete);
+        return new AuthResponse(token, user.getRole().name(), user.getName(), user.getId(), onboardingComplete, user.getStartingWeight());
     }
 
     private boolean isOnboardingComplete(User user) {

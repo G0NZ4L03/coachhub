@@ -11,4 +11,5 @@ public class AuthResponse {
     private String name;
     private Long id;
     private Boolean onboardingComplete;
+    private java.math.BigDecimal startingWeight;
 }
