@@ -3,9 +3,12 @@ import { useAuth } from '../context/AuthContext'
 import Header from '../components/Header'
 import { addDailyMetric, getMyMetrics } from '../services/api'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { useNavigate } from 'react-router-dom'
+
 
 export default function AthleteProgress({ isDarkMode, setIsDarkMode }) {
   const { user } = useAuth()
+  const navigate = useNavigate()
 
   const [metrics, setMetrics] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -76,6 +79,14 @@ export default function AthleteProgress({ isDarkMode, setIsDarkMode }) {
           setIsDarkMode={setIsDarkMode}
         />
 
+        {/* Boton para volver al dashboard */}
+        <button
+          onClick={() => navigate('/athlete/dashboard')}
+          className="mb-6 flex items-center gap-2 text-sm font-medium text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+        >
+          ← Volver a mi rutina
+        </button>
+
         {/* Formulario para registrar peso de hoy */}
         <div className="bg-white dark:bg-[#2a273f] rounded-2xl p-6 border border-slate-200 dark:border-white/10 mb-6">
           <h2 className="text-base font-bold text-slate-900 dark:text-white mb-1">Registrar peso</h2>
@@ -139,8 +150,10 @@ export default function AthleteProgress({ isDarkMode, setIsDarkMode }) {
                       backgroundColor: isDarkMode ? '#2a273f' : '#ffffff',
                       border: isDarkMode ? '1px solid #ffffff1a' : '1px solid #e2e8f0',
                       borderRadius: '12px',
-                      fontSize: '13px'
+                      fontSize: '13px',
+                      color: isDarkMode ? '#ffffff' : '#1d1a2f'
                     }}
+                    labelStyle={{ color: isDarkMode ? '#ffffff' : '#1d1a2f' }}
                   />
                   <Line type="monotone" dataKey="weight" stroke="#8bd450" strokeWidth={3} dot={{ r: 4 }} name="Peso (kg)" />
                 </LineChart>

@@ -83,8 +83,10 @@ export default function DashboardCoach({ isDarkMode, setIsDarkMode }) {
             </p>
           </div>
           <div className="bg-white dark:bg-[#2a273f] rounded-2xl p-5 border border-slate-200 dark:border-white/10">
-            <p className="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1">Rutinas activas</p>
-            <p className="text-3xl font-bold text-purple-600 dark:text-[#965fd4]">—</p>
+            <p className="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1">Atletas activos</p>
+            <p className="text-3xl font-bold text-purple-600 dark:text-[#965fd4]">
+              {isLoadingAthletes ? '—' : athletes.filter(a => a.active).length}
+            </p>
           </div>
         </div>
 

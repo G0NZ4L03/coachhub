@@ -15,6 +15,9 @@ export default function Header({ title, subtitle, userName, isDarkMode, setIsDar
   // Ruta del perfil segun el rol
   const profileLink = user?.role === 'COACH' ? '/coach/profile' : '/athlete/profile'
 
+  // Texto del enlace segun el rol: el coach solo consulta, el atleta puede editar su objetivo
+  const profileLinkText = user?.role === 'COACH' ? 'Mi Perfil' : 'Editar mi perfil'
+
   // Colores del avatar segun quien entre
   const avatarColors = user?.role === 'COACH'
     ? 'border-purple-600 bg-purple-100 text-purple-700 dark:border-[#965fd4] dark:bg-[#965fd4]/20 dark:text-[#965fd4]'
@@ -76,7 +79,7 @@ export default function Header({ title, subtitle, userName, isDarkMode, setIsDar
                 className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-white/5"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Mi Perfil
+                {profileLinkText}
               </Link>
 
               <button

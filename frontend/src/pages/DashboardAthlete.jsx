@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Header from '../components/Header'
 import OnboardingModal from '../components/OnboardingModal'
-import { getRoutinesByAthlete, getExercisesByRoutine } from '../services/api'
+import { getRoutinesByAthlete, getExercisesByRoutine, getMyMetrics } from '../services/api'
 
 export default function DashboardAthlete({ isDarkMode, setIsDarkMode }) {
   const { user } = useAuth()
@@ -14,14 +14,32 @@ export default function DashboardAthlete({ isDarkMode, setIsDarkMode }) {
   const [routineExercises, setRoutineExercises] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
+  // Ultimo peso registrado en las metricas diarias, distinto del peso inicial de onboarding
+  const [currentWeight, setCurrentWeight] = useState(null)
+
   // Cargamos la rutina activa del atleta al montar el componente
   useEffect(() => {
-    if (user?.onboardingComplete) {
-      fetchRoutine()
-    } else {
-      setIsLoading(false)
+      if (user?.onboardingComplete) {
+        fetchRoutine()
+        fetchCurrentWeight()
+      } else {
+        setIsLoading(false)
+      }
+    }, [user])
+
+    // Trae el ultimo registro de peso de las metricas diarias
+    const fetchCurrentWeight = async () => {
+      try {
+        const response = await getMyMetrics()
+        if (response.data.length > 0) {
+          // Llega ordenado por fecha ascendente, el ultimo es el mas reciente
+          const last = response.data[response.data.length - 1]
+          setCurrentWeight(last.weight)
+        }
+      } catch (err) {
+        console.error('Error al cargar el peso actual:', err)
+      }
     }
-  }, [user])
 
   const fetchRoutine = async () => {
     try {
@@ -91,7 +109,7 @@ export default function DashboardAthlete({ isDarkMode, setIsDarkMode }) {
               <div className="bg-white dark:bg-[#2a273f] rounded-2xl p-5 border border-slate-200 dark:border-white/10">
                 <p className="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1">Peso actual</p>
                 <p className="text-3xl font-bold text-green-600 dark:text-[#8bd450]">
-                  {user?.startingWeight ? `${user.startingWeight} kg` : '—'}
+                  {currentWeight ? `${currentWeight} kg` : user?.startingWeight ? `${user.startingWeight} kg` : '—'}
                 </p>
               </div>
               <div className="bg-white dark:bg-[#2a273f] rounded-2xl p-5 border border-slate-200 dark:border-white/10">

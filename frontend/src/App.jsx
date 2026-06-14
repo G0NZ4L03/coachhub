@@ -6,6 +6,8 @@ import DashboardCoach from './pages/DashboardCoach'
 import DashboardAthlete from './pages/DashboardAthlete'
 import CoachAthleteDetail from './pages/CoachAthleteDetail'
 import AthleteProgress from './pages/AthleteProgress'
+import AthleteProfile from './pages/AthleteProfile'
+import CoachProfile from './pages/CoachProfile'
 
 function App() {
   // Estado global del modo oscuro gestionado aqui y pasado como prop
@@ -62,6 +64,21 @@ function App() {
             <AthleteProgress isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
           </ProtectedRoute>
         } />
+
+        {/* Perfil editable del atleta */}
+        <Route path="/athlete/profile" element={
+          <ProtectedRoute requiredRole="ATHLETE">
+            <AthleteProfile isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+          </ProtectedRoute>
+        } />
+
+        {/* Perfil informativo del coach */}
+        <Route path="/coach/profile" element={
+          <ProtectedRoute requiredRole="COACH">
+            <CoachProfile isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+          </ProtectedRoute>
+        } />
+
       </Routes>
     </BrowserRouter>
   )

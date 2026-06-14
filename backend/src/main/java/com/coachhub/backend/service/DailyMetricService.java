@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +19,16 @@ public class DailyMetricService {
     private final DailyMetricRepository dailyMetricRepository;
     private final UserRepository userRepository;
 
-    // Registra una nueva entrada de peso para el atleta autenticado
+    // Registra o actualiza la entrada de peso del dia para el atleta autenticado
+    // Si ya existe un registro para esa fecha, lo sobreescribe en lugar de duplicar
     public DailyMetric addMetric(String email, DailyMetricRequest request) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-        DailyMetric metric = new DailyMetric();
+        Optional<DailyMetric> existing = dailyMetricRepository
+                .findByUser_IdAndDate(user.getId(), request.getDate());
+
+        DailyMetric metric = existing.orElse(new DailyMetric());
         metric.setUser(user);
         metric.setDate(request.getDate());
         metric.setWeight(request.getWeight());
@@ -39,5 +44,10 @@ public class DailyMetricService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
         return dailyMetricRepository.findByUser_IdOrderByDateAsc(user.getId());
+    }
+
+    // Devuelve el historico de peso de un atleta concreto, para que el coach lo consulte
+    public List<DailyMetric> getMetricsByAthleteId(Long athleteId) {
+        return dailyMetricRepository.findByUser_IdOrderByDateAsc(athleteId);
     }
 }

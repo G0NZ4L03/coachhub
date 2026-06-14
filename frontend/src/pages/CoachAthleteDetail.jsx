@@ -8,7 +8,8 @@ import {
   createRoutine, 
   addExerciseToRoutine,
   getRoutinesByAthlete,
-  getExercisesByRoutine
+  getExercisesByRoutine,
+  getAthleteMetrics
 } from '../services/api'
 
 export default function CoachAthleteDetail({ isDarkMode, setIsDarkMode }) {
@@ -20,6 +21,7 @@ export default function CoachAthleteDetail({ isDarkMode, setIsDarkMode }) {
   const [athlete, setAthlete] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [currentWeight, setCurrentWeight] = useState(null)
 
   // Rutina activa del atleta
   const [activeRoutine, setActiveRoutine] = useState(null)
@@ -76,6 +78,12 @@ export default function CoachAthleteDetail({ isDarkMode, setIsDarkMode }) {
         getRoutinesByAthlete(id),
         getAllExercises()
       ])
+
+      // Cargamos el ultimo peso registrado del atleta
+      const metricsRes = await getAthleteMetrics(id)
+      if (metricsRes.data.length > 0) {
+        setCurrentWeight(metricsRes.data[metricsRes.data.length - 1].weight)
+      }
 
       setAthlete(athleteRes.data)
       setExercises(exercisesRes.data)
@@ -245,13 +253,13 @@ export default function CoachAthleteDetail({ isDarkMode, setIsDarkMode }) {
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-slate-100 dark:bg-white/5">
                 {[
-                  { label: 'Edad', value: athlete.birthDate ? `${calcAge(athlete.birthDate)} años` : '—' },
-                  { label: 'Género', value: translateGender(athlete.gender) },
-                  { label: 'Altura', value: athlete.height ? `${athlete.height} cm` : '—' },
-                  { label: 'Peso inicial', value: athlete.startingWeight ? `${athlete.startingWeight} kg` : '—' },
-                  { label: 'Objetivo', value: translateObjective(athlete.objective) },
-                  { label: 'Estado', value: athlete.isActive ? 'Activo' : 'Inactivo' },
-                ].map((item) => (
+                { label: 'Edad', value: athlete.birthDate ? `${calcAge(athlete.birthDate)} años` : '—' },
+                { label: 'Género', value: translateGender(athlete.gender) },
+                { label: 'Altura', value: athlete.height ? `${athlete.height} cm` : '—' },
+                { label: 'Peso inicial', value: athlete.startingWeight ? `${athlete.startingWeight} kg` : '—' },
+                { label: 'Peso actual', value: currentWeight ? `${currentWeight} kg` : athlete.startingWeight ? `${athlete.startingWeight} kg` : '—' },
+                { label: 'Objetivo', value: translateObjective(athlete.objective) },
+              ].map((item) => (
                   <div key={item.label} className="bg-white dark:bg-[#2a273f] px-6 py-4">
                     <p className="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-1">
                       {item.label}

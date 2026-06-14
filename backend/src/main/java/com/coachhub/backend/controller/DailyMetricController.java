@@ -32,4 +32,11 @@ public class DailyMetricController {
             @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(dailyMetricService.getMyMetrics(userDetails.getUsername()));
     }
+    
+    // El coach consulta las metricas de un atleta concreto
+    @GetMapping("/athlete/{athleteId}")
+    public ResponseEntity<List<DailyMetric>> getAthleteMetrics(@PathVariable Long athleteId) {
+        return ResponseEntity.ok(dailyMetricService.getMetricsByAthleteId(athleteId));
+    }
+
 }

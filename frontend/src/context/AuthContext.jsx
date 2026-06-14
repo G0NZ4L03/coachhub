@@ -40,6 +40,13 @@ export function AuthProvider({ children }) {
     setUser(prev => ({ ...prev, onboardingComplete: true, startingWeight }))
   }
 
+  // Actualiza el peso del atleta en el contexto tras editar su perfil
+  // A diferencia de completeOnboarding, no toca el estado de onboarding
+  const updateStartingWeight = (startingWeight) => {
+    localStorage.setItem('user_starting_weight', startingWeight)
+    setUser(prev => ({ ...prev, startingWeight }))
+  }
+
   // Limpiamos al salir
   const logoutUser = () => {
     localStorage.removeItem('jwt_token')
@@ -52,8 +59,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logoutUser, completeOnboarding }}>
-      {children}
+    <AuthContext.Provider value={{ user, loginUser, logoutUser, completeOnboarding, updateStartingWeight }}>      {children}
     </AuthContext.Provider>
   )
 }

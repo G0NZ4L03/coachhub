@@ -80,4 +80,7 @@ export const addDailyMetric = (data) => api.post('/metrics', data)
 // Devuelve el historico de peso del atleta para la grafica
 export const getMyMetrics = () => api.get('/metrics')
 
+// El coach consulta el historico de peso de un atleta concreto
+export const getAthleteMetrics = (athleteId) => api.get(`/metrics/athlete/${athleteId}`)
+
 export default api
