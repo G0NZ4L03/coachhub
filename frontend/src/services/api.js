@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // Direccion del backend de Spring Boot
-const BASE_URL = 'http://localhost:8080/api'
+const BASE_URL = import.meta.env.VITE_API_URL
 
 // Preparamos axios para no tener que escribir la ruta entera todo el rato
 const api = axios.create({
