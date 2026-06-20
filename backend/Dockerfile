@@ -10,4 +10,6 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+//Esperamos 10s a que MySQL este listo antes de iniciar Spring Boot
+ENTRYPOINT ["sh", "-c", "sleep 10 && java -jar app.jar"]
